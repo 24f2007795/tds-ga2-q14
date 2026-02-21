@@ -1,11 +1,11 @@
-from fastapi import FastAPI, Request
+from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 import json
 import numpy as np
+import os
 
 app = FastAPI()
 
-# Enable CORS
 app.add_middleware(
     CORSMiddleware,
     allow_origins=["*"],
@@ -13,9 +13,13 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-# Load telemetry file
-with open("telemetry.json") as f:
+# Correct path handling for Vercel
+BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+FILE_PATH = os.path.join(BASE_DIR, "q-vercel-latency.json")
+
+with open(FILE_PATH) as f:
     data = json.load(f)
+
 
 @app.post("/")
 async def analyze(payload: dict):
