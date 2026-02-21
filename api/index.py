@@ -6,16 +6,15 @@ import os
 
 app = FastAPI()
 
-# Proper CORS configuration
+# ✅ Proper CORS for Vercel
 app.add_middleware(
     CORSMiddleware,
     allow_origins=["*"],
-    allow_credentials=False,
-    allow_methods=["POST", "OPTIONS"],
+    allow_methods=["*"],
     allow_headers=["*"],
 )
 
-# Load telemetry file from same folder
+# Load telemetry file
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 FILE_PATH = os.path.join(BASE_DIR, "q-vercel-latency.json")
 
