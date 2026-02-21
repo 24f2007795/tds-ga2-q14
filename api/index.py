@@ -6,12 +6,25 @@ import os
 
 app = FastAPI()
 
-# Load telemetry file from same directory
+# Load telemetry file
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 FILE_PATH = os.path.join(BASE_DIR, "q-vercel-latency.json")
 
 with open(FILE_PATH) as f:
     data = json.load(f)
+
+
+# ✅ Handle OPTIONS explicitly (preflight)
+@app.options("/")
+async def options_handler():
+    return JSONResponse(
+        content={},
+        headers={
+            "Access-Control-Allow-Origin": "*",
+            "Access-Control-Allow-Methods": "POST, OPTIONS",
+            "Access-Control-Allow-Headers": "*"
+        }
+    )
 
 
 @app.post("/")
@@ -38,7 +51,6 @@ async def analyze(request: Request):
             "breaches": sum(1 for l in latencies if l > threshold),
         }
 
-    # Explicitly attach CORS header
     return JSONResponse(
         content=result,
         headers={
