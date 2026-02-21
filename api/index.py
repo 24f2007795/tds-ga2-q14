@@ -17,8 +17,9 @@ app.add_middleware(
 )
 
 # Load telemetry file safely for Vercel
-BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-FILE_PATH = os.path.join(BASE_DIR, "q-versel-latency.json")
+
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+FILE_PATH = os.path.join(BASE_DIR, "q-vercel-latency.json")
 
 with open(FILE_PATH) as f:
     data = json.load(f)
